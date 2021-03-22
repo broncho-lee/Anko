@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="top.broncho.anko">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="top.broncho.anko">
 
+    <application>
+        <provider
+            android:name=".Anko"
+            android:authorities="${applicationId}.Anko"
+            android:exported="false"
+            android:multiprocess="true" />
+    </application>
 </manifest>
