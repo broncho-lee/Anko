@@ -1,4 +1,5 @@
 @file:Suppress("NOTHING_TO_INLINE", "unused")
+
 package top.broncho.anko
 
 import android.content.Context
@@ -33,7 +34,7 @@ fun Context.attr(@AttrRes attribute: Int): TypedValue = theme.attr(attribute)
 
 @Dimension(unit = Dimension.PX)
 fun Context.dimenAttr(@AttrRes attribute: Int): Int =
-        TypedValue.complexToDimensionPixelSize(attr(attribute).data, resources.displayMetrics)
+    TypedValue.complexToDimensionPixelSize(attr(attribute).data, resources.displayMetrics)
 
 @ColorInt
 fun Context.colorAttr(@AttrRes attribute: Int): Int = theme.color(attribute)

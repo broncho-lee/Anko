@@ -1,21 +1,6 @@
-/*
- * Copyright 2016 JetBrains s.r.o.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 @file:Suppress("unused", "NOTHING_TO_INLINE")
 @file:JvmName("Logging")
+
 package top.broncho.anko
 
 import android.util.Log
@@ -50,10 +35,11 @@ fun AnkoLogger(tag: String): AnkoLogger = object : AnkoLogger {
     init {
         assert(tag.length <= 23) { "The maximum tag length is 23, got $tag" }
     }
+
     override val loggerTag = tag
 }
 
-inline fun <reified T: Any> AnkoLogger(): AnkoLogger = AnkoLogger(T::class.java)
+inline fun <reified T : Any> AnkoLogger(): AnkoLogger = AnkoLogger(T::class.java)
 
 /**
  * Send a log message with the [Log.VERBOSE] severity.
@@ -68,8 +54,8 @@ inline fun <reified T: Any> AnkoLogger(): AnkoLogger = AnkoLogger(T::class.java)
  */
 fun AnkoLogger.verbose(message: Any?, thr: Throwable? = null) {
     log(this, message, thr, Log.VERBOSE,
-            { tag, msg -> Log.v(tag, msg) },
-            { tag, msg, thr -> Log.v(tag, msg, thr) })
+        { tag, msg -> Log.v(tag, msg) },
+        { tag, msg, thr -> Log.v(tag, msg, thr) })
 }
 
 /**
@@ -85,8 +71,8 @@ fun AnkoLogger.verbose(message: Any?, thr: Throwable? = null) {
  */
 fun AnkoLogger.debug(message: Any?, thr: Throwable? = null) {
     log(this, message, thr, Log.DEBUG,
-            { tag, msg -> Log.d(tag, msg) },
-            { tag, msg, thr -> Log.d(tag, msg, thr) })
+        { tag, msg -> Log.d(tag, msg) },
+        { tag, msg, thr -> Log.d(tag, msg, thr) })
 }
 
 /**
@@ -102,8 +88,8 @@ fun AnkoLogger.debug(message: Any?, thr: Throwable? = null) {
  */
 fun AnkoLogger.info(message: Any?, thr: Throwable? = null) {
     log(this, message, thr, Log.INFO,
-            { tag, msg -> Log.i(tag, msg) },
-            { tag, msg, thr -> Log.i(tag, msg, thr) })
+        { tag, msg -> Log.i(tag, msg) },
+        { tag, msg, thr -> Log.i(tag, msg, thr) })
 }
 
 /**
@@ -119,8 +105,8 @@ fun AnkoLogger.info(message: Any?, thr: Throwable? = null) {
  */
 fun AnkoLogger.warn(message: Any?, thr: Throwable? = null) {
     log(this, message, thr, Log.WARN,
-            { tag, msg -> Log.w(tag, msg) },
-            { tag, msg, thr -> Log.w(tag, msg, thr) })
+        { tag, msg -> Log.w(tag, msg) },
+        { tag, msg, thr -> Log.w(tag, msg, thr) })
 }
 
 /**
@@ -136,8 +122,8 @@ fun AnkoLogger.warn(message: Any?, thr: Throwable? = null) {
  */
 fun AnkoLogger.error(message: Any?, thr: Throwable? = null) {
     log(this, message, thr, Log.ERROR,
-            { tag, msg -> Log.e(tag, msg) },
-            { tag, msg, thr -> Log.e(tag, msg, thr) })
+        { tag, msg -> Log.e(tag, msg) },
+        { tag, msg, thr -> Log.e(tag, msg, thr) })
 }
 
 /**
@@ -249,12 +235,13 @@ inline fun AnkoLogger.error(message: () -> Any?) {
 inline fun Throwable.getStackTraceString(): String = Log.getStackTraceString(this)
 
 private inline fun log(
-        logger: AnkoLogger,
-        message: Any?,
-        thr: Throwable?,
-        level: Int,
-        f: (String, String) -> Unit,
-        fThrowable: (String, String, Throwable) -> Unit) {
+    logger: AnkoLogger,
+    message: Any?,
+    thr: Throwable?,
+    level: Int,
+    f: (String, String) -> Unit,
+    fThrowable: (String, String, Throwable) -> Unit
+) {
     val tag = logger.loggerTag
     if (Log.isLoggable(tag, level)) {
         if (thr != null) {

@@ -1,41 +1,21 @@
-/*
- * Copyright 2016 JetBrains s.r.o.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 @file:Suppress("unused", "NOTHING_TO_INLINE")
+
 package top.broncho.anko
 
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.AssetManager
 import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Bundle
 import android.os.Parcelable
 import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import java.io.Serializable
-
-
-inline val Activity.defaultSharedPreferences: SharedPreferences
-    get() = PreferenceManager.getDefaultSharedPreferences(this)
 
 inline val Context.defaultSharedPreferences: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(this)
@@ -48,14 +28,6 @@ inline val Fragment.act: Activity
 
 inline val Fragment.ctx: Context
     get() = requireContext()
-
-@Deprecated(message = "Inline", replaceWith = ReplaceWith("this"))
-inline val Context.ctx: Context
-    get() = this
-
-@Deprecated(message = "Inline", replaceWith = ReplaceWith("this"))
-inline val Activity.act: Activity
-    get() = this
 
 /**
  * Returns the content view of this Activity if set, null otherwise.
@@ -70,15 +42,20 @@ inline fun <reified T : View> Dialog.find(@IdRes id: Int): T = findViewById(id)
 
 inline fun <reified T : View> View.findOptional(@IdRes id: Int): T? = findViewById(id) as? T
 inline fun <reified T : View> Activity.findOptional(@IdRes id: Int): T? = findViewById(id) as? T
-inline fun <reified T : View> Fragment.findOptional(@IdRes id: Int): T? = view?.findViewById(id) as? T
+inline fun <reified T : View> Fragment.findOptional(@IdRes id: Int): T? =
+    view?.findViewById(id) as? T
+
 inline fun <reified T : View> Dialog.findOptional(@IdRes id: Int): T? = findViewById(id) as? T
 
-inline fun <T: Fragment> T.withArguments(vararg params: Pair<String, Any?>): T {
+inline fun <T : Fragment> T.withArguments(vararg params: Pair<String, Any?>): T {
     arguments = bundleOf(*params)
     return this
 }
 
-@Deprecated(message = "Use the Android KTX version", replaceWith = ReplaceWith("bundleOf(params)", "androidx.core.os.bundleOf"))
+@Deprecated(
+    message = "Use the Android KTX version",
+    replaceWith = ReplaceWith("bundleOf(params)", "androidx.core.os.bundleOf")
+)
 fun bundleOf(vararg params: Pair<String, Any?>): Bundle {
     val b = Bundle()
     for (p in params) {
@@ -108,7 +85,10 @@ fun bundleOf(vararg params: Pair<String, Any?>): Bundle {
                 @Suppress("UNCHECKED_CAST")
                 when {
                     v.isArrayOf<Parcelable>() -> b.putParcelableArray(k, v as Array<out Parcelable>)
-                    v.isArrayOf<CharSequence>() -> b.putCharSequenceArray(k, v as Array<out CharSequence>)
+                    v.isArrayOf<CharSequence>() -> b.putCharSequenceArray(
+                        k,
+                        v as Array<out CharSequence>
+                    )
                     v.isArrayOf<String>() -> b.putStringArray(k, v as Array<out String>)
                     else -> throw AnkoException("Unsupported bundle component (${v.javaClass})")
                 }
