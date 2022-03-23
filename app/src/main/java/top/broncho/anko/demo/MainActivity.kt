@@ -1,10 +1,11 @@
-package top.broncho.anko
+package top.broncho.anko.demo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import top.broncho.anko.*
 import top.broncho.anko.dialogs.alert
 import top.broncho.anko.dialogs.cancelButton
 import top.broncho.anko.dialogs.okButton
